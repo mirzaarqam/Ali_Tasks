@@ -35,10 +35,6 @@ def extract_city_links(url):
 
     try:
         driver.get(url)
-        # WebDriverWait(driver, 10).until(EC.presence_of_element_located(
-        #     (By.CSS_SELECTOR, "div.CityBlock__Content-fc0pwz-2.dcuRiJ")))  # Wait for first type of city blocks
-        # WebDriverWait(driver, 10).until(EC.presence_of_element_located(
-        #     (By.CSS_SELECTOR, "div.Styled__CityTitleHolder-m8ru5e-10")))  # Wait for second type of city blocks
 
         progress.stop()
         print("\nWebsite connected and loaded successfully!")

@@ -127,8 +127,8 @@ def save_to_csv(deals, filename=None):
         print(f"\nError saving to CSV: {e}")
 
 
-@app.route('/api/scrape_deals', methods=['GET'])
-def api_scrape_deals():
+@app.route('/scrape_deals', methods=['GET'])
+def scrape_deals():
     city = request.args.get('city', default="karachi", type=str)
     url = f"https://hbl-web.peekaboo.guru/{city}/places/_all/all"
     print(f"Starting scraping process for city: {city}")
