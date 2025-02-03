@@ -1,4 +1,5 @@
 import csv
+import os
 import time
 from datetime import datetime
 from selenium import webdriver
@@ -6,22 +7,23 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-from progress_indicator import ProgressIndicator
+from Configs.progress_indicator import ProgressIndicator
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from tqdm import tqdm
+from Configs import configs as conf
 def scrape_hbl_deals(url, city):
     """
     Scrape deals information from HBL website and store in CSV
     """
     # Set up Selenium with Chrome in headless mode
     chrome_options = Options()
-    chrome_options.binary_location = "/snap/bin/chromium"  # Replace with your actual Chromium path
+    chrome_options.binary_location = conf.CHROMIUM_BINARIES  # Replace with your actual Chromium path
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--remote-debugging-port=9222")
-    service = Service(executable_path="/home/arqam/Downloads/chromedriver-linux64/chromedriver")
+    service = Service(executable_path=conf.CHROME_DRIVERS)
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # Start progress indicator
@@ -97,12 +99,12 @@ def scrape_hbl_deals(url, city):
 def each_deal_details(url, city):
     print(f"City is: {city}")
     chrome_options = Options()
-    chrome_options.binary_location = "/snap/bin/chromium"  # Replace with your actual Chromium path
+    chrome_options.binary_location = conf.CHROMIUM_BINARIES  # Replace with your actual Chromium path
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--remote-debugging-port=9222")
-    service = Service(executable_path="/home/arqam/Downloads/chromedriver-linux64/chromedriver")
+    service = Service(executable_path=conf.CHROME_DRIVERS)
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # Start progress indicator
@@ -198,7 +200,9 @@ def each_deal_details(url, city):
                 print(f"  Discount: {entry['discount']}")
                 print(f"  Applicable Cards: {', '.join(entry['cards'])}")
 
-        with open(f"{city}_deals.csv", "w", newline='', encoding="utf-8") as csvfile:
+        output_folder = "DataManager"
+        csv_file_path = os.path.join(output_folder, f"{city}_deals.csv")
+        with open(csv_file_path, "w", newline='', encoding="utf-8") as csvfile:
             csv_writer = csv.writer(csvfile)
             # Write header
             csv_writer.writerow(["City Name", "Deal Name", "Discount", "Applicable Cards"])
@@ -213,7 +217,7 @@ def each_deal_details(url, city):
                         ", ".join(entry["cards"])
                     ])
 
-        print(f"\nData saved to {city}_deals.csv")
+        print(f"\nData saved to {csv_file_path}")
 
     except Exception as e:
         print(e)
@@ -252,7 +256,7 @@ def save_to_csv(deals, filename=None):
 
 
 def main():
-    city = "abbottabad"
+    city = "karachi"
     url = f"https://hbl-web.peekaboo.guru/{city}/places/_all/all"
     print("Starting scraping process...")
     print("=" * 50)

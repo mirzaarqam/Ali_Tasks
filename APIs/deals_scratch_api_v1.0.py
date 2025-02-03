@@ -1,3 +1,5 @@
+# This file will scratch all deals and discount. Not card's information
+
 import csv
 import time
 from datetime import datetime
@@ -7,7 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-from progress_indicator import ProgressIndicator
+from Configs.progress_indicator import ProgressIndicator
 
 app = Flask(__name__)
 
@@ -147,4 +149,5 @@ def scrape_deals():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

@@ -54,7 +54,7 @@ def scrape_hbl_deals(url):
         print("\nWebsite connected successfully!")
 
         # Save HTML to a file for debugging purposes
-        with open("hbl_deals_page.html", "w", encoding="utf-8") as file:
+        with open("html/hbl_deals_page.html", "w", encoding="utf-8") as file:
             file.write(response.text)
         print("HTML content saved to hbl_deals_page.html")
 
