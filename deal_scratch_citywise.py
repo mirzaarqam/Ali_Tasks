@@ -137,11 +137,16 @@ def each_deal_details(url, city):
         for i in range(len(deals_block)):
             # Re-fetch city blocks to avoid stale element issues
             print(i)
-            city_blocks = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located(
-                    (By.XPATH, "//div[contains(@class, 'Styled__CardHolder-ii87o4-1')]"))
-            )
+            try:
+                city_blocks = WebDriverWait(driver, 10).until(
+                    EC.presence_of_all_elements_located(
+                        (By.XPATH, "//div[contains(@class, 'Styled__CardHolder-ii87o4-1')]"))
+                )
+            except Exception as e:
+                print(f"Error locating city blocks: {e}")
+                break
             # Ensure `i` is within the bounds of `city_blocks`
+            print(len(city_blocks))
             if i >= len(city_blocks):
                 print(f"Index {i} out of range for city blocks.")
                 break
