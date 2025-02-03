@@ -287,16 +287,46 @@ def save_to_csv(deals, filename=None):
         progress.stop()
         print(f"\nError saving to CSV: {e}")
 
+def extract_city_from_url(url):
+    # Split URL and get the city name part
+    parts = url.split("/")
+    if len(parts) > 4:
+        return parts[3]
+    return ""
+
+def read_city_links(file_path):
+    city_links = []
+    with open(file_path, mode='r', newline='') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            city = row['City']
+            url = row['URL']
+            city_name = extract_city_from_url(url)
+            city_links.append((city_name, url))
+    return city_links
+
+# def main():
+#     cities = ["karachi", "islamabad", "rawalpindi", "multan", "peshawar", "faisalabad", "lahore"]
+#     for city in cities:
+#         url = f"https://hbl-web.peekaboo.guru/{city}/places/_all/all"
+#         print("Starting scraping process...")
+#         print("=" * 50)
+#
+#         # deals = scrape_hbl_deals(url, city)
+#         deals = each_deal_details(url, city)# Pass city name to the scraping function
+#         # if deals:
+#         #     save_to_csv(deals)
+#
+#         print("=" * 50)
+#         print("Scraping process completed!")
 
 def main():
-    cities = ["islamabad", "rawalpindi", "multan", "peshawar", "faisalabad", "lahore"]
-    for city in cities:
-        url = f"https://hbl-web.peekaboo.guru/{city}/places/_all/all"
+    city_links = read_city_links('city_links.csv')
+    for city_name, url in city_links:
         print("Starting scraping process...")
         print("=" * 50)
 
-        # deals = scrape_hbl_deals(url, city)
-        deals = each_deal_details(url, city)# Pass city name to the scraping function
+        deals = each_deal_details(url, city_name)  # Pass city name to the scraping function
         # if deals:
         #     save_to_csv(deals)
 
